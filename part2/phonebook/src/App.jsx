@@ -25,9 +25,10 @@ const App = () => {
   const[successMessage, setSuccessMessage]=useState(null)
   const[errorMessage, setErrorMessage]=useState(null)
   const Notification=({message,style})=>{
-    if (message===null){
-      return null
-    }
+    // if (message===null){
+    //   return null
+    // }
+    if (!message) return null;
     return (
       <div className={style}> 
         {message}
@@ -80,10 +81,36 @@ const App = () => {
           setSuccessMessage(null)
         }, 5000);
       })
-      .catch(error => {
+      // .catch(error => {
+      //   console.log("🛑 Full error object:", error);
+      //   console.log("📌 Error response:", error.response);
+      
+      //   if (error.response) {
+      //     console.log("✅ Error status code:", error.response.status);
+      //     console.log("✅ Error data:", error.response.data);
+      //   } else {
+      //     console.log("❌ No response received from server");
+      //   }
+      
+      //   if (error.response && error.response.data && error.response.data.error) {
+      //     console.log("🚨 Setting errorMessage:", error.response.data.error);
+      //     setErrorMessage(error.response.data.error);
+      //   } else {
+      //     console.log("❓ Setting errorMessage: An unknown error occurred");
+      //     setErrorMessage('An unknown error occurred');
+      //   }
+      
+      //   setTimeout(() => {
+      //     console.log("🕐 Clearing error message");
+      //     setErrorMessage(null);
+      //   }, 5000);
+      // });
+      
+      
+      .catch((error) => {
         setErrorMessage(`Information of ${newName} has already been removed from server.`)
         setTimeout(() => {
-          setErrorMessage(null)
+          setErrorMessage('')
         }, 5000);
         console.log('error updating person:', error)
       })
@@ -112,8 +139,16 @@ const App = () => {
         setSuccessMessage(null)
       }, 5000);
     })
-    .catch(error=>{
-      console.log('error adding person:',error)
+    // .catch(error=>{
+    //   console.log('error adding person:',error)
+    // })
+    .catch(err => {
+      // this is the way to access the error message
+      // console.error(error.response.data.error)
+      setErrorMessage(err.response.data.error)
+      setTimeout( () => {
+        setErrorMessage('')
+      },4000)
     })
   }
 
